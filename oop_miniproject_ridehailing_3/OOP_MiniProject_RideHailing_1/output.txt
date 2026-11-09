@@ -1,0 +1,81 @@
+RIDE-HAILING APP SIMULATOR  |  Team 1  |  Roll Nos. 1 to 5
+
+=== MODULE 1: Registration (sample data) ===
+  --- Riders ---
+  R001  Rider    Anil       9876500001   (2.0, 3.0)
+  R002  Rider    Bhavya     9876500002   (8.0, 1.0)
+  R003  Rider    Charan     9876500003   (5.0, 7.0)
+  R004  Rider    Divya      9876500004   (1.0, 9.0)
+  R005  Rider    Eshwar     9876500005   (9.0, 9.0)
+  R006  Rider    Farah      9876500006   (4.0, 4.0)
+  --- Drivers ---
+  D001  Driver   Raju       9123400001   (1.0, 2.0)  Auto[TS09AU1001]
+  D002  Driver   Suresh     9123400002   (7.0, 2.0)  Auto[TS09AU1002]
+  D003  Driver   Kiran      9123400003   (3.0, 5.0)  Mini[TS09MN2001]
+  D004  Driver   Mahesh     9123400004   (6.0, 8.0)  Mini[TS09MN2002]
+  D005  Driver   Naveen     9123400005   (9.0, 8.0)  Mini[TS09MN2003]
+  D006  Driver   Omkar      9123400006   (2.0, 8.0)  Sedan[TS09SD3001]
+  D007  Driver   Prakash    9123400007   (5.0, 5.0)  Sedan[TS09SD3002]
+  D008  Driver   Ramesh     9123400008   (8.0, 3.0)  Mini[TS09MN2004]
+
+=== MODULE 1: Wrong inputs (must be rejected) ===
+  REJECTED: Invalid phone '12345': need 10 digits starting with 6-9.
+  REJECTED: Name cannot be empty.
+  REJECTED: Phone 9876500001 is already registered.
+  REJECTED: Unknown vehicle type: Bike
+
+=== MODULE 2 & 3: Single ride - nearest driver + fare ===
+  RD001 Anil     -> Kiran    Mini    10.6 km  Rs. 188.40 normal ONGOING   rating=0
+  (Kiran at (3,5) is the nearest free Mini to Anil at (2,3))
+
+=== MODULE 3: Fare for 10 km, all vehicles, Normal vs Surge ===
+  Auto   normal=Rs.145.00   Surge x1.5=Rs.217.50
+  Mini   normal=Rs.180.00   Surge x1.5=Rs.270.00
+  Sedan  normal=Rs.240.00   Surge x1.5=Rs.360.00
+
+=== MODULE 4: 6 riders request a Mini at the SAME time (only 4 Minis exist) ===
+  [Thread-6] Farah   CONFIRMED  driver=Ramesh  fare=Rs.90.40 
+  [Thread-1] Anil    CONFIRMED  driver=Kiran   fare=Rs.90.40 
+  [Thread-2] Bhavya  CONFIRMED  driver=Naveen  fare=Rs.82.00 
+  [Thread-3] Charan  CONFIRMED  driver=Mahesh  fare=Rs.135.60 (SURGE)
+  [Thread-4] Divya   REJECTED   No free Mini driver for Divya
+  [Thread-5] Eshwar  REJECTED   No free Mini driver for Eshwar
+  Confirmed=4  Rejected=2
+  Any driver given to two riders? NO - synchronization works
+
+=== More rides + ratings ===
+  RD006 Divya    -> Omkar    Sedan    8.6 km  Rs. 214.80 normal COMPLETED rating=5
+  RD007 Eshwar   -> Suresh   Auto    10.0 km  Rs. 145.00 normal COMPLETED rating=3
+
+=== WRONG INPUT: no driver available ===
+  REJECTED: No free Sedan driver for Charan
+
+=== MODULE 5: Ride history ===
+  Ride history:
+  RD001 Anil     -> Kiran    Mini    10.6 km  Rs. 188.40 normal COMPLETED rating=5
+  RD002 Farah    -> Ramesh   Mini     3.6 km  Rs.  90.40 normal COMPLETED rating=4
+  RD003 Anil     -> Kiran    Mini     3.6 km  Rs.  90.40 normal COMPLETED rating=4
+  RD004 Bhavya   -> Naveen   Mini     3.0 km  Rs.  82.00 normal COMPLETED rating=4
+  RD005 Charan   -> Mahesh   Mini     3.6 km  Rs. 135.60 SURGE  COMPLETED rating=4
+  RD006 Divya    -> Omkar    Sedan    8.6 km  Rs. 214.80 normal COMPLETED rating=5
+  RD007 Eshwar   -> Suresh   Auto    10.0 km  Rs. 145.00 normal COMPLETED rating=3
+  RD008 Anil     -> Prakash  Sedan    8.5 km  Rs. 213.00 normal COMPLETED rating=4
+  RD009 Bhavya   -> Omkar    Sedan    7.2 km  Rs. 189.60 normal COMPLETED rating=4
+
+=== MODULE 5: Driver earnings and ratings ===
+  ID    Driver   Type   Earnings(Rs)   Rating   Rides
+  D006  Omkar    Sedan        323.52     4.50       2
+  D003  Kiran    Mini         223.04     4.50       2
+  D007  Prakash  Sedan        170.40     4.00       1
+  D002  Suresh   Auto         116.00     3.00       1
+  D004  Mahesh   Mini         108.48     4.00       1
+  D008  Ramesh   Mini          72.32     4.00       1
+  D005  Naveen   Mini          65.60     4.00       1
+  D001  Raju     Auto           0.00     0.00       0
+
+=== MODULE 5: Summary ===
+  Total rides=9  completed=9  surge rides=1  total fare=Rs.1349.20
+
+=== MODULE 5: File storage (save, reload into fresh objects) ===
+  [i] Save finished -> data
+  Reloaded=true  riders=6  drivers=8  rides=9
